@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:maa="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8"/>
+    <title>World Countries</title>
+    <!--  <link rel="stylesheet" href="maaStyle.css" th:href="@{maaStyle.css}"/>-->
+    <style>
+        body {
+            color: darkgrey;
+            background-image: url("oldworld.png");
+        }
+        table {
+            width: 1050px;
+            background-color: wheat;
+            color: black;
+            background: rgba(204,204,204,0.5);
+            margin: auto;
+            background: rgba(204,204,204,0.5);
+            border: 7px solid gray;;
+            border-radius: 20px;
+        }
+        th {
+            text-align: left;
+            font-style: italic;
+        }
+        td {
+
+        }
+        h1 {
+            color: black;
+        }
+        div {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1 th:inline="text">World Countries, Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<div>
+    <form th:action="@{/edellinensivu}" th:object="${countryCity}"  method="post">
+
+        <td><input th:type="submit" th:value="previous"></td>
+    </form>
+    <form   th:action="@{/seuraavasivu}" th:object="${countryCity}"  method="post">
+    <td><input th:type="submit" th:value="next"></td>
+</form>
+
+</div>
+<table>
+
+    <tr><th>Country</th><th>Capital</th><th>CountryCode</th><th>Population</th><th>IndependenceYear</th></tr>
+    <tr th:each="maa: ${capitals}" th:object="${maa}">
+    <td th:text="${maa.name}"></td>
+<!--<td th:if="${maa.capital} !=null" th:text="${maa.capital.name}"></td>
+    <td th:unless="${maa.capital} !=null" th:text="'-'"></td>-->
+    <td th:text="${maa.capital} ? *{capital.name} : '-'"></td>  <!--tämä rivi ajaa saman asian kuin kaksi ylempää riviä-->
+
+    <td th:if="${maa.capital} !=null" th:text="${maa.capital.getTahanKaupunkiinViittaavaMaa().code}"></td>
+    <td th:unless="${maa.capital} !=null" th:text="'-'"></td>
+    <td th:text="*{population}"></td>
+    <td th:if="${maa.indepyear} !=null" th:text="${maa.indepyear}"></td>
+    <td th:unless="${maa.indepyear} !=null" th:text="'-'"></td>
+
+
+    </tr>
+
+
+</table>
+</body>
+</html>
